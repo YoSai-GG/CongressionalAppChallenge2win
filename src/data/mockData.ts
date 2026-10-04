@@ -309,6 +309,10 @@ export const mockRecipes: Recipe[] = [
   },
 ];
 
+// Additional recipes are appended from the separate file
+import { additionalRecipes } from './additionalRecipes';
+mockRecipes.push(...additionalRecipes);
+
 export const mockCompostTips: CompostTip[] = [
   {
     id: 'c1',

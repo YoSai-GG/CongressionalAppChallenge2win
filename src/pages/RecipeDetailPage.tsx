@@ -1,4 +1,4 @@
-import { ArrowLeft, Clock, Users, Flame, ChefHat, CheckCircle2, Leaf } from 'lucide-react';
+import { ArrowLeft, Clock, Users, Flame, ChefHat, CheckCircle2, Leaf, Lightbulb, Globe } from 'lucide-react';
 import type { Recipe } from '@/data/mockData';
 import Badge from '@/components/Badge';
 
@@ -41,7 +41,7 @@ export default function RecipeDetailPage({ recipe, onBack, backLabel = 'Back' }:
 
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Stats bar */}
-        <div className="grid grid-cols-3 gap-4 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+        <div className="grid grid-cols-2 gap-4 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:grid-cols-4">
           <div className="flex items-center gap-3">
             <Clock className="h-5 w-5 text-emerald-600" />
             <div>
@@ -61,6 +61,13 @@ export default function RecipeDetailPage({ recipe, onBack, backLabel = 'Back' }:
             <div>
               <p className="text-xs text-stone-400">Difficulty</p>
               <p className="text-sm font-semibold text-stone-900">{recipe.difficulty}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Globe className="h-5 w-5 text-emerald-600" />
+            <div>
+              <p className="text-xs text-stone-400">Cuisine</p>
+              <p className="text-sm font-semibold text-stone-900">{recipe.cuisine}</p>
             </div>
           </div>
         </div>
@@ -122,6 +129,23 @@ export default function RecipeDetailPage({ recipe, onBack, backLabel = 'Back' }:
                 ))}
               </ol>
             </div>
+
+            {recipe.tips && recipe.tips.length > 0 && (
+              <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/50 p-6 shadow-sm">
+                <h2 className="flex items-center gap-2 text-lg font-bold text-stone-900">
+                  <Lightbulb className="h-5 w-5 text-amber-500" />
+                  Chef's Tips
+                </h2>
+                <ul className="mt-4 space-y-3">
+                  {recipe.tips.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-stone-700">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-500" />
+                      <span className="leading-relaxed">{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

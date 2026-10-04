@@ -118,7 +118,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                   </div>
                   <div>
                     <p className="text-xs text-stone-400">Recipes ready</p>
-                    <p className="text-sm font-bold text-stone-900">6 suggestions</p>
+                    <p className="text-sm font-bold text-stone-900">12 suggestions</p>
                   </div>
                 </div>
               </div>

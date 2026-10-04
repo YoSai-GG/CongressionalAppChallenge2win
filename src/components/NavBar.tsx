@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
+  Home,
   LayoutDashboard,
   Package,
   UtensilsCrossed,
@@ -19,6 +20,7 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
+  { id: 'landing', label: 'Home', icon: Home },
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'pantry', label: 'Pantry', icon: Package },
   { id: 'recipes', label: 'Recipes', icon: UtensilsCrossed },
@@ -43,14 +45,12 @@ export default function NavBar({ currentPage, onNavigate }: NavBarProps) {
     setMobileOpen(false);
   };
 
-  const isLanding = currentPage === 'landing';
-
   return (
     <header className="sticky top-0 z-40 border-b border-stone-200/60 bg-white/90 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <button
-            onClick={() => handleNavigate(isLanding ? 'landing' : 'dashboard')}
+            onClick={() => handleNavigate('landing')}
             className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
           >
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-sm">

@@ -13,6 +13,7 @@ import type { Recipe } from '@/data/mockData';
 export default function App() {
   const [page, setPage] = useState<PageId>('landing');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [recipeSource, setRecipeSource] = useState<PageId>('recipes');
 
   const handleNavigate = (next: PageId) => {
     setSelectedRecipe(null);
@@ -21,13 +22,31 @@ export default function App() {
   };
 
   const handleRecipeClick = (recipe: Recipe) => {
+    setRecipeSource(page);
     setSelectedRecipe(recipe);
     window.scrollTo({ top: 0 });
   };
 
+  const handleRecipeBack = () => {
+    setSelectedRecipe(null);
+    window.scrollTo({ top: 0 });
+  };
+
+  const recipeBackLabel = recipeSource === 'dashboard'
+    ? 'Back to dashboard'
+    : recipeSource === 'expiration'
+    ? 'Back to expiration'
+    : 'Back to recipes';
+
   const renderPage = () => {
     if (selectedRecipe) {
-      return <RecipeDetailPage recipe={selectedRecipe} onBack={() => setSelectedRecipe(null)} />;
+      return (
+        <RecipeDetailPage
+          recipe={selectedRecipe}
+          onBack={handleRecipeBack}
+          backLabel={recipeBackLabel}
+        />
+      );
     }
 
     switch (page) {

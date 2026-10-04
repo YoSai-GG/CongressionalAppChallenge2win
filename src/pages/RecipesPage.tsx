@@ -8,7 +8,7 @@ type RecipesPageProps = {
   onRecipeClick: (recipe: Recipe) => void;
 };
 
-const FILTERS = ['All', 'Vegetarian', 'Vegan', 'Breakfast', 'Dinner', '30-min', 'No-cook'];
+const FILTERS = ['All', 'Vegetarian', 'Vegan', 'Breakfast', 'Dinner', '30-min', 'No-cook', 'High-protein', 'Comfort'];
 
 export default function RecipesPage({ onRecipeClick }: RecipesPageProps) {
   const [filter, setFilter] = useState('All');

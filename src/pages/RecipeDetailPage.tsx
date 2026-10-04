@@ -5,9 +5,10 @@ import Badge from '@/components/Badge';
 type RecipeDetailPageProps = {
   recipe: Recipe;
   onBack: () => void;
+  backLabel?: string;
 };
 
-export default function RecipeDetailPage({ recipe, onBack }: RecipeDetailPageProps) {
+export default function RecipeDetailPage({ recipe, onBack, backLabel = 'Back' }: RecipeDetailPageProps) {
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-stone-50">
       {/* Hero image */}
@@ -20,7 +21,7 @@ export default function RecipeDetailPage({ recipe, onBack }: RecipeDetailPagePro
             className="inline-flex items-center gap-2 rounded-lg bg-white/90 px-4 py-2 text-sm font-medium text-stone-700 backdrop-blur-sm transition-colors hover:bg-white"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to recipes
+            {backLabel}
           </button>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-6">

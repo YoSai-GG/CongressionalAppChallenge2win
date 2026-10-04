@@ -27,6 +27,7 @@ export default function Footer({ onNavigate }: FooterProps) {
           <div>
             <h3 className="text-sm font-semibold text-stone-900">Explore</h3>
             <ul className="mt-3 space-y-2 text-sm">
+              <li><button onClick={() => onNavigate('landing')} className="text-stone-500 transition-colors hover:text-emerald-600">Home</button></li>
               <li><button onClick={() => onNavigate('dashboard')} className="text-stone-500 transition-colors hover:text-emerald-600">Dashboard</button></li>
               <li><button onClick={() => onNavigate('pantry')} className="text-stone-500 transition-colors hover:text-emerald-600">Pantry</button></li>
               <li><button onClick={() => onNavigate('recipes')} className="text-stone-500 transition-colors hover:text-emerald-600">Recipes</button></li>

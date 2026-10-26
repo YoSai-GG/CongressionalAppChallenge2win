@@ -1,4 +1,4 @@
-import { AlertCircle, Clock, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Clock, CheckCircle2, Pencil, Trash2 } from 'lucide-react';
 import type { Ingredient } from '@/data/mockData';
 import Badge from './Badge';
 
@@ -6,9 +6,11 @@ type IngredientCardProps = {
   ingredient: Ingredient;
   daysUntilExpiry: number;
   onClick?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
 };
 
-export default function IngredientCard({ ingredient, daysUntilExpiry, onClick }: IngredientCardProps) {
+export default function IngredientCard({ ingredient, daysUntilExpiry, onClick, onEdit, onDelete }: IngredientCardProps) {
   const expired = daysUntilExpiry < 0;
   const expiringSoon = daysUntilExpiry >= 0 && daysUntilExpiry <= 3;
 
@@ -21,13 +23,14 @@ export default function IngredientCard({ ingredient, daysUntilExpiry, onClick }:
     ? 'Today'
     : `In ${daysUntilExpiry} day${daysUntilExpiry === 1 ? '' : 's'}`;
 
+  const hasActions = Boolean(onEdit) || Boolean(onDelete);
+
   return (
-    <button
-      onClick={onClick}
-      disabled={!onClick}
+    <div
       className={`flex items-center gap-4 rounded-xl border border-stone-200 bg-white p-4 text-left shadow-sm transition-all ${
-        onClick ? 'hover:shadow-md hover:border-stone-300 cursor-pointer' : 'cursor-default'
+        onClick ? 'hover:shadow-md hover:border-stone-300 cursor-pointer' : hasActions ? '' : 'cursor-default'
       }`}
+      onClick={onClick}
     >
       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-stone-50 ${iconColor}`}>
         <Icon className="h-5 w-5" />
@@ -48,6 +51,37 @@ export default function IngredientCard({ ingredient, daysUntilExpiry, onClick }:
           <span>{ingredient.location}</span>
         </div>
       </div>
-    </button>
+
+      {hasActions && (
+        <div className="flex flex-shrink-0 items-center gap-1">
+          {onEdit && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit();
+              }}
+              aria-label={`Edit ${ingredient.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-stone-100 hover:text-emerald-600"
+            >
+              <Pencil className="h-4 w-4" />
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+              aria-label={`Delete ${ingredient.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition-colors hover:bg-red-50 hover:text-red-600"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

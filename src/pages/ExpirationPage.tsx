@@ -1,13 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CalendarClock, ArrowRight, AlertCircle, Clock, CheckCircle2 } from 'lucide-react';
 import type { PageId } from '@/components/NavBar';
-import type { Recipe } from '@/data/mockData';
+import type { Ingredient, Recipe } from '@/data/mockData';
 import PageHeader from '@/components/PageHeader';
 import StatCard from '@/components/StatCard';
 import IngredientCard from '@/components/IngredientCard';
 import RecipeCard from '@/components/RecipeCard';
 import { mockIngredients, mockRecipes } from '@/data/mockData';
 import { getDaysUntilExpiry } from '@/pages/DashboardPage';
+import { loadIngredients } from '@/lib/pantryStore';
 
 type ExpirationPageProps = {
   onNavigate: (page: PageId) => void;
@@ -15,8 +16,14 @@ type ExpirationPageProps = {
 };
 
 export default function ExpirationPage({ onRecipeClick }: ExpirationPageProps) {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+  useEffect(() => {
+    setIngredients(loadIngredients(mockIngredients));
+  }, []);
+
   const { expired, expiringSoon, fresh } = useMemo(() => {
-    const withDays = mockIngredients.map((ing) => ({
+    const withDays = ingredients.map((ing) => ({
       ingredient: ing,
       days: getDaysUntilExpiry(ing.expirationDate),
     }));
@@ -25,7 +32,7 @@ export default function ExpirationPage({ onRecipeClick }: ExpirationPageProps) {
       expiringSoon: withDays.filter((x) => x.days >= 0 && x.days <= 3).sort((a, b) => a.days - b.days),
       fresh: withDays.filter((x) => x.days > 3).sort((a, b) => a.days - b.days),
     };
-  }, []);
+  }, [ingredients]);
 
   const expiringNames = expiringSoon.map((x) => x.ingredient.name);
   const recommendedRecipes = mockRecipes

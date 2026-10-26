@@ -1,11 +1,12 @@
 import { Package, CalendarClock, UtensilsCrossed, Leaf, ArrowRight, AlertCircle, Clock, TrendingUp } from 'lucide-react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { PageId } from '@/components/NavBar';
 import PageHeader from '@/components/PageHeader';
 import StatCard from '@/components/StatCard';
 import IngredientCard from '@/components/IngredientCard';
 import RecipeCard from '@/components/RecipeCard';
 import { mockIngredients, mockRecipes, type Ingredient, type Recipe } from '@/data/mockData';
+import { loadIngredients } from '@/lib/pantryStore';
 
 type DashboardPageProps = {
   onNavigate: (page: PageId) => void;
@@ -20,8 +21,14 @@ export function getDaysUntilExpiry(dateStr: string): number {
 }
 
 export default function DashboardPage({ onNavigate, onRecipeClick }: DashboardPageProps) {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+
+  useEffect(() => {
+    setIngredients(loadIngredients(mockIngredients));
+  }, []);
+
   const { expiringSoon, expired, fresh, expiringWithRecipes } = useMemo(() => {
-    const withDays = mockIngredients.map((ing) => ({
+    const withDays = ingredients.map((ing) => ({
       ingredient: ing,
       days: getDaysUntilExpiry(ing.expirationDate),
     }));
@@ -42,7 +49,7 @@ export default function DashboardPage({ onNavigate, onRecipeClick }: DashboardPa
       });
 
     return { expiringSoon, expired, fresh, expiringWithRecipes };
-  }, []);
+  }, [ingredients]);
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-stone-50">
@@ -57,7 +64,7 @@ export default function DashboardPage({ onNavigate, onRecipeClick }: DashboardPa
         <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard
             label="Total items"
-            value={mockIngredients.length}
+            value={ingredients.length}
             icon={<Package className="h-5 w-5" />}
             accent="emerald"
             subtext="Across your pantry"
@@ -152,7 +159,7 @@ export default function DashboardPage({ onNavigate, onRecipeClick }: DashboardPa
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           <QuickLinkCard
             title="Browse Pantry"
-            description={`${mockIngredients.length} ingredients tracked`}
+            description={`${ingredients.length} ingredients tracked`}
             icon={<Package className="h-5 w-5" />}
             onClick={() => onNavigate('pantry')}
           />
